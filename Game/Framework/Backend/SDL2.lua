@@ -177,6 +177,31 @@ typedef unsigned long long Uint64;
 Uint64 SDL_GetPerformanceCounter(void);
 // get performance frequency
 Uint64 SDL_GetPerformanceFrequency(void);
+
+// SDL_Rect
+typedef struct SDL_Rect {
+    int x, y;
+    int w, h;
+} SDL_Rect;
+
+// fill render rect
+int SDL_RenderFillRect(SDL_Renderer* renderer, SDL_Rect* rect);
+int SDL_RenderDrawRect(SDL_Renderer* renderer, SDL_Rect* rect);
+
+// render clear
+int SDL_RenderClear(SDL_Renderer* renderer);
+
+// SDL_Color
+typedef struct SDL_Color {
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+    unsigned char a;
+} SDL_Color;
+int SDL_SetRenderDrawColor(SDL_Renderer* renderer, unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+
+// SDL_RenderPresent
+void SDL_RenderPresent(SDL_Renderer* renderer);
 ]]
 
 local SDL = ffi.load("SDL2.dll")
@@ -287,5 +312,33 @@ SDL2.Event = ffi.typeof("SDL_Event")
 function SDL2.PollEvent(event)
     return SDL.SDL_PollEvent(event)
 end
+
+-- graphics
+function SDL2.RenderFillRect(renderer, rect)
+    return SDL.SDL_RenderFillRect(renderer, rect)
+end
+
+function SDL2.RenderDrawRect(renderer, rect)
+    return SDL.SDL_RenderDrawRect(renderer, rect)
+end
+
+function SDL2.RenderClear(renderer)
+    return SDL.SDL_RenderClear(renderer)
+end
+
+function SDL2.SetRenderDrawColor(renderer, r, g, b, a)
+    return SDL.SDL_SetRenderDrawColor(renderer, r, g, b, a)
+end
+
+function SDL2.RenderPresent(renderer)
+    return SDL.SDL_RenderPresent(renderer)
+end
+
+-- SDL_Color
+
+SDL2.Color = ffi.typeof("SDL_Color")
+
+-- SDL_Rect
+SDL2.Rect = ffi.typeof("SDL_Rect")
 
 return SDL2

@@ -1,4 +1,4 @@
-local Window = {}
+Game.Window = {}
 local SDL2 = require("Game.Framework.Backend.SDL2")
 local Windows = require("Game.Framework.Backend.Windows")
 
@@ -7,73 +7,76 @@ local lastTime = 0
 local currentTime = 0
 -- use os to get the times LMFAO
 
-function Window.CreateWindow(title, x, y, w, h, flags)
+Game.Window._window = nil
+Game.Window._renderer = nil
+
+
+function Game.Window.CreateWindow(title, x, y, w, h, flags)
     local desktopWidth, desktopHeight = Windows.GetDesktopDimensions()
     local x = x or desktopWidth / 2 - w / 2
     local y = y or desktopHeight / 2 - h / 2
-    return SDL2.CreateWindow(title, x, y, w, h, flags)
+    local flags = flags or 0
+    Game.Window._window = SDL2.CreateWindow(title, x, y, w, h, flags)
+    
+    -- create renderer
+    Game.Window._renderer = SDL2.CreateRenderer(Game.Window._window, -1, 0)
+    return Game.Window._window
 end
 
-function Window.DestroyWindow(window)
+function Game.Window.DestroyWindow(window)
     SDL2.DestroyWindow(window)
 end
 
-function Window.CreateRenderer(window, index, flags)
+function Game.Window.CreateRenderer(window, index, flags)
     return SDL2.CreateRenderer(window, index, flags)
 end
 
-function Window.DestroyRenderer(renderer)
-    SDL2.DestroyRenderer(renderer)
-end
-
 -- should quit?
-Window.ShouldQuit = false
+Game.Window.ShouldQuit = false
 
 -- close functions
-function Window.Quit()
+function Game.Window.Quit()
     print("Quitting...")
     Window.ShouldQuit = true
     SDL2.Quit()
 end
 
 -- delay
-function Window.Delay(ms)
+function Game.Window.Delay(ms)
     SDL2.Delay(ms)
 end
 
 -- get ticks
-function Window.GetTicks()
+function Game.Window.GetTicks()
     return SDL2.GetTicks()
 end
 
 -- get window size
-function Window.GetWindowSize(window)
+function Game.Window.GetWindowSize(window)
     return SDL2.GetWindowSize(window)
 end
 
 -- get renderer output size
-function Window.GetRendererOutputSize(renderer)
+function Game.Window.GetRendererOutputSize(renderer)
     return SDL2.GetRendererOutputSize(renderer)
 end
 
 -- renderer functions
-function Window.RenderClear(renderer)
-    SDL2.SDL_RenderClear(renderer)
+function Game.Window.RenderClear(renderer)
+    SDL2.RenderClear(renderer)
 end
 
-function Window.GetTime()
+function Game.Window.GetTime()
     return SDL2.GetTime()
 end
 
-function Window.Update()
+function Game.Window.Update()
     -- use ticks
-    currentTime = Window.GetTicks()
+    currentTime = Game.Window.GetTicks()
     delta = (currentTime - lastTime)/1000
     lastTime = currentTime
 end
 
-function Window.GetDelta()
+function Game.Window.GetDelta()
     return delta
 end
-
-return Window
