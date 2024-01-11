@@ -73,17 +73,6 @@ typedef struct SDL_WindowEvent {
     int data2;
 } SDL_WindowEvent;
 
-typedef struct SDL_KeyboardEvent {
-    unsigned int type;
-    unsigned int timestamp;
-    unsigned int windowID;
-    unsigned char state;
-    unsigned char repeat;
-    unsigned char padding2;
-    unsigned char padding3;
-    unsigned char keysym[8];
-} SDL_KeyboardEvent;
-
 typedef struct SDL_TextEditingEvent {
     unsigned int type;
     unsigned int timestamp;
@@ -147,6 +136,31 @@ typedef struct SDL_JoyAxisEvent {
     unsigned short padding4;
 } SDL_JoyAxisEvent;
 
+// SDL_Keysym
+typedef struct SDL_Keysym {
+    unsigned int scancode;
+    unsigned int sym;
+    unsigned int mod;
+    unsigned int unused;
+} SDL_Keysym;
+
+// SDL_GetKeyState (Uint8*)
+typedef unsigned char Uint8;
+
+// SDL_GetKeyState
+Uint8* SDL_GetKeyboardState(int* numkeys);
+
+typedef struct SDL_KeyboardEvent {
+    unsigned int type;
+    unsigned int timestamp;
+    unsigned int windowID;
+    unsigned char state;
+    unsigned char repeat;
+    unsigned char padding2;
+    unsigned char padding3;
+    SDL_Keysym keysym;
+} SDL_KeyboardEvent;
+
 // SDL_Event
 typedef union SDL_Event {
     unsigned int type;
@@ -169,6 +183,8 @@ int SDL_PeepEvents(SDL_Event* events, int numevents, int action, unsigned int mi
 int SDL_PushEvent(SDL_Event* event);
 // flush events
 void SDL_FlushEvent(unsigned int type);
+// pump events
+void SDL_PumpEvents(void);
 
 // Uint64
 typedef unsigned long long Uint64;
@@ -202,6 +218,10 @@ int SDL_SetRenderDrawColor(SDL_Renderer* renderer, unsigned char r, unsigned cha
 
 // SDL_RenderPresent
 void SDL_RenderPresent(SDL_Renderer* renderer);
+
+// SDL_GetKeyboardState (Uint8*)
+typedef unsigned char Uint8;
+Uint8* SDL_GetKeyboardState(int* numkeys);
 ]]
 
 local SDL = ffi.load("SDL2.dll")
@@ -293,7 +313,9 @@ end
 SDL2.EventType = {
     FirstEvent = 0,
     Quit = 0x100,
-    LastEvent = 0x1FF
+    LastEvent = 0x1FF,
+    KeyDown = 0x300,
+    KeyUp = 0x301
 }
 
 -- event
@@ -312,6 +334,26 @@ SDL2.Event = ffi.typeof("SDL_Event")
 function SDL2.PollEvent(event)
     return SDL.SDL_PollEvent(event)
 end
+
+function SDL2.PeepEvents(events, numevents, action, minType, maxType)
+    return SDL.SDL_PeepEvents(events, numevents, action, minType, maxType)
+end
+
+function SDL2.PushEvent(event)
+    return SDL.SDL_PushEvent(event)
+end
+
+function SDL2.FlushEvent(type)
+    return SDL.SDL_FlushEvent(type)
+end
+
+function SDL2.PumpEvents()
+    return SDL.SDL_PumpEvents()
+end
+
+-- SDL_Keysym
+SDL2.Keysym = ffi.typeof("SDL_Keysym")
+
 
 -- graphics
 function SDL2.RenderFillRect(renderer, rect)
@@ -340,5 +382,12 @@ SDL2.Color = ffi.typeof("SDL_Color")
 
 -- SDL_Rect
 SDL2.Rect = ffi.typeof("SDL_Rect")
+
+-- SDL_GetKeyState
+function SDL2.GetKeyboardState()
+    local numkeys = ffi.new("int[1]")
+    local keys = SDL.SDL_GetKeyboardState(numkeys)
+    return keys, numkeys[0]
+end
 
 return SDL2

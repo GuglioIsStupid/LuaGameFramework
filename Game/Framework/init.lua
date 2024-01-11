@@ -7,6 +7,7 @@ local path = (...) .. "."
 Game._sdl2 = require(path .. "Backend.SDL2")
 require(path .. "Modules.Window")
 require(path .. "Modules.Graphics")
+require(path .. "Modules.Keyboard")
 function Game:run()
     if self.load then self:load() end
 
@@ -21,9 +22,10 @@ function Game:run()
                 if self.quit then self:quit() end
                 self.Window.Quit()
             elseif event.type == self._sdl2.EventType.KeyDown then
-                print(event.key.keysym.sym)
-                if self.keypressed then self:keypressed(event.key.keysym.sym) end
+                local keyname = self.Keyboard.GetKeyName(event.key.keysym.sym)
+                if self.keypressed then self:keypressed(keyname) end
             end
+                
         end
 
         -- update

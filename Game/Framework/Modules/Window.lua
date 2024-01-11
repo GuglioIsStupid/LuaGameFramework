@@ -10,7 +10,6 @@ local currentTime = 0
 Game.Window._window = nil
 Game.Window._renderer = nil
 
-
 function Game.Window.CreateWindow(title, x, y, w, h, flags)
     local desktopWidth, desktopHeight = Windows.GetDesktopDimensions()
     local x = x or desktopWidth / 2 - w / 2
@@ -75,6 +74,8 @@ function Game.Window.Update()
     currentTime = Game.Window.GetTicks()
     delta = (currentTime - lastTime)/1000
     lastTime = currentTime
+    SDL2.PumpEvents()
+    Game.Keyboard._keystate = SDL2.GetKeyboardState()
 end
 
 function Game.Window.GetDelta()
