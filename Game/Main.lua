@@ -12,7 +12,6 @@ function Game:load()
 end
 
 function Game:update(dt)
-
 end
 
 function Game:draw()

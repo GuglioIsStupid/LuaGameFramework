@@ -2,6 +2,11 @@ local Window = {}
 local SDL2 = require("Game.Framework.Backend.SDL2")
 local Windows = require("Game.Framework.Backend.Windows")
 
+local delta = 0
+local lastTime = 0
+local currentTime = 0
+-- use os to get the times LMFAO
+
 function Window.CreateWindow(title, x, y, w, h, flags)
     local desktopWidth, desktopHeight = Windows.GetDesktopDimensions()
     local x = x or desktopWidth / 2 - w / 2
@@ -53,8 +58,22 @@ end
 
 -- renderer functions
 function Window.RenderClear(renderer)
-    SDL.SDL_RenderClear(renderer)
+    SDL2.SDL_RenderClear(renderer)
 end
 
+function Window.GetTime()
+    return SDL2.GetTime()
+end
+
+function Window.Update()
+    -- use ticks
+    currentTime = Window.GetTicks()
+    delta = (currentTime - lastTime)/1000
+    lastTime = currentTime
+end
+
+function Window.GetDelta()
+    return delta
+end
 
 return Window

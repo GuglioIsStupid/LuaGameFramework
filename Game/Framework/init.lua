@@ -23,7 +23,9 @@ function Game:run()
         end
 
         -- update
-        if self.update then self:update() end
+        self.Window.Update()
+        local dt = self.Window.GetDelta()
+        if self.update then self:update(dt) end
 
         -- draw
         if self.draw then self:draw() end

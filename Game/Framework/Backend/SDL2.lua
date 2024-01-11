@@ -27,6 +27,10 @@ int SDL_QuitRequested();
 void SDL_Delay(unsigned int ms);
 unsigned int SDL_GetTicks();
 
+// time
+typedef unsigned long long SDL_Time;
+SDL_Time SDL_GetTime();
+
 // functions for getting window size
 void SDL_GetWindowSize(SDL_Window* window, int* w, int* h);
 
@@ -165,6 +169,14 @@ int SDL_PeepEvents(SDL_Event* events, int numevents, int action, unsigned int mi
 int SDL_PushEvent(SDL_Event* event);
 // flush events
 void SDL_FlushEvent(unsigned int type);
+
+// Uint64
+typedef unsigned long long Uint64;
+
+// get performance counter
+Uint64 SDL_GetPerformanceCounter(void);
+// get performance frequency
+Uint64 SDL_GetPerformanceFrequency(void);
 ]]
 
 local SDL = ffi.load("SDL2.dll")
@@ -212,6 +224,21 @@ end
 -- get ticks
 function SDL2.GetTicks()
     return SDL.SDL_GetTicks()
+end
+
+-- time
+function SDL2.GetTime()
+    return SDL.SDL_GetTime()
+end
+
+-- get performance counter
+function SDL2.GetPerformanceCounter()
+    return SDL.SDL_GetPerformanceCounter()
+end
+
+-- get performance frequency
+function SDL2.GetPerformanceFrequency()
+    return SDL.SDL_GetPerformanceFrequency()
 end
 
 -- get window size
