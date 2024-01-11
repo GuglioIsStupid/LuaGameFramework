@@ -5,9 +5,13 @@ Game = {}
 local path = (...) .. "."
 
 Game._sdl2 = require(path .. "Backend.SDL2")
+Game._sdl_mixer = require(path .. "Backend.SDLMixer")
 require(path .. "Modules.Window")
 require(path .. "Modules.Graphics")
 require(path .. "Modules.Keyboard")
+
+-- init mixer
+Game._sdl_mixer.Init(Game._sdl_mixer.MIX_INIT_MP3)
 function Game:run()
     if self.load then self:load() end
 
@@ -23,7 +27,14 @@ function Game:run()
                 self.Window.Quit()
             elseif event.type == self._sdl2.EventType.KeyDown then
                 local keyname = self.Keyboard.GetKeyName(event.key.keysym.sym)
-                if self.keypressed then self:keypressed(keyname) end
+                self.Keyboard._keys[keyname].pressed = true
+                self.Keyboard._keys[keyname].held = true
+                if self.keypressed then self:keypressed() end
+            elseif event.type == self._sdl2.EventType.KeyUp then
+                local keyname = self.Keyboard.GetKeyName(event.key.keysym.sym)
+                self.Keyboard._keys[keyname].pressed = false
+                self.Keyboard._keys[keyname].held = false
+                if self.keyreleased then self:keyreleased(keyname) end
             end
                 
         end
@@ -40,6 +51,8 @@ function Game:run()
         self._sdl2.RenderPresent(self.Window._renderer)
         -- delay
         self.Window.Delay(1)
+
+        self.Keyboard.Update()
     end
 end
 

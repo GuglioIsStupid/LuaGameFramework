@@ -14,17 +14,24 @@ local player = {
 
 function Game:load()
     Game.Window.CreateWindow("Game", nil, nil, 640, 480, 0)
+
 end
 
-function Game:update(dt)
-    -- trig
-    local width, height = Game.Window.GetWindowSize(Game.Window._window)
-    player.x = math.sin(Game.Window.GetTicks() / 1000) * 100 + width / 2
-    player.y = math.cos(Game.Window.GetTicks() / 1000) * 100 + height / 2
+function Game:update(dt)    
+    if Game.Keyboard.IsKeyDown("W") then
+        player.y = player.y - 100 * dt
+    elseif Game.Keyboard.IsKeyDown("S") then
+        player.y = player.y + 100 * dt
+    end
+
+    if Game.Keyboard.IsKeyDown("A") then
+        player.x = player.x - 100 * dt
+    elseif Game.Keyboard.IsKeyDown("D") then
+        player.x = player.x + 100 * dt
+    end
 end
 
 function Game:keypressed(key)
-    print(key)
 end
 
 function Game:draw()

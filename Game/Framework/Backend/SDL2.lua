@@ -222,11 +222,52 @@ void SDL_RenderPresent(SDL_Renderer* renderer);
 // SDL_GetKeyboardState (Uint8*)
 typedef unsigned char Uint8;
 Uint8* SDL_GetKeyboardState(int* numkeys);
+
+enum {
+    SDL_INIT_TIMER = 0x00000001,
+    SDL_INIT_AUDIO = 0x00000010,
+    SDL_INIT_VIDEO = 0x00000020,
+    SDL_INIT_JOYSTICK = 0x00000200,
+    SDL_INIT_HAPTIC = 0x00001000,
+    SDL_INIT_GAMECONTROLLER = 0x00002000,
+    SDL_INIT_EVENTS = 0x00004000,
+    SDL_INIT_NOPARACHUTE = 0x00100000,
+    SDL_INIT_EVERYTHING = 0x0000FFFF
+};
+
+int SDL_Init(unsigned int flags);
+
+// SDL_AudioSpec
+typedef unsigned short Uint16;
+typedef unsigned int Uint32;
+
+typedef void (*SDL_AudioCallback)(void* userdata, Uint8* stream, int len);
+
+typedef struct SDL_AudioSpec {
+    int freq;
+    Uint16 format;
+    Uint8 channels;
+    Uint8 silence;
+    Uint16 samples;
+    Uint32 size;
+    SDL_AudioCallback callback;
+    void* userdata;
+} SDL_AudioSpec;
+
+// SDL_LoadWAV
+SDL_AudioSpec* SDL_LoadWAV(const char* file, SDL_AudioSpec* spec, Uint8** audio_buf, Uint32* audio_len);
 ]]
 
 local SDL = ffi.load("SDL2.dll")
 
 local SDL2 = {}
+
+-- init everything
+function SDL2.Init(flags)
+    return SDL.SDL_Init(flags)
+end
+
+SDL2.Init(SDL.SDL_INIT_EVERYTHING)
 
 function SDL2.CreateWindow(title, x, y, w, h, flags)
     return SDL.SDL_CreateWindow(title, x, y, w, h, flags)

@@ -3,7 +3,14 @@ local SDL2 = require("Game.Framework.Backend.SDL2")
 local function s_lower(str)
     return string.lower(str)
 end
+local function s_upper(str)
+    return string.upper(str)
+end
+local function s_capitalize(str)
+    return string.upper(string.sub(str, 1, 1)) .. string.sub(str, 2)
+end
 Game.Keyboard = {}
+Game.Keyboard._keys = {}
 
 --https://www.freepascal-meets-sdl.net/sdl-2-0-key-code-lookup-table/
 
@@ -251,6 +258,47 @@ local keycodes = {
     [1073742111] = "Max"
 }
 
+for k, v in pairs(keycodes) do
+    Game.Keyboard._keys[v] = {
+        pressed = false,
+        released = false,
+        held = false
+    }
+end
+
+function Game.Keyboard.IsKeyDown(key)
+    local key = Game.Keyboard.GetKeyCode(key)
+    return Game.Keyboard._keys[key].held
+end
+
+function Game.Keyboard.IsKeyPressed(key)
+    local key = Game.Keyboard.GetKeyCode(key)
+    return Game.Keyboard._keys[key].pressed
+end
+
+function Game.Keyboard.IsKeyReleased(key)
+    local key = Game.Keyboard.GetKeyCode(key)
+    return Game.Keyboard._keys[key].released
+end
+
+function Game.Keyboard.Update()
+    for k, v in pairs(keycodes) do
+        Game.Keyboard._keys[v].pressed = false
+        Game.Keyboard._keys[v].released = false
+    end
+end
+
 function Game.Keyboard.GetKeyName(key)
-    return s_lower(keycodes[key])
+    return keycodes[key]
+end
+
+function Game.Keyboard.GetKeyCode(key)
+    local keycode = 0
+    for k, v in pairs(keycodes) do
+        if v == key then
+            keycode = k
+            break
+        end
+    end
+    return keycodes[keycode]
 end
