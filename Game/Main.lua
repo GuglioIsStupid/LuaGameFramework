@@ -34,6 +34,9 @@ end
 function Game:keypressed(key)
 end
 
+function Game:keyreleased(key)
+end
+
 function Game:draw()
     Game._sdl2.SetRenderDrawColor(Game.Window._renderer, 255, 255, 255, 255)
     Game.Graphics.DrawRect("fill", player.x, player.y, 100, 100)

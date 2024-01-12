@@ -256,6 +256,9 @@ typedef struct SDL_AudioSpec {
 
 // SDL_LoadWAV
 SDL_AudioSpec* SDL_LoadWAV(const char* file, SDL_AudioSpec* spec, Uint8** audio_buf, Uint32* audio_len);
+
+// base path
+const char* SDL_GetBasePath(void);
 ]]
 
 local SDL = ffi.load("SDL2.dll")
@@ -429,6 +432,11 @@ function SDL2.GetKeyboardState()
     local numkeys = ffi.new("int[1]")
     local keys = SDL.SDL_GetKeyboardState(numkeys)
     return keys, numkeys[0]
+end
+
+-- base path
+function SDL2.GetBasePath()
+    return SDL.SDL_GetBasePath()
 end
 
 return SDL2

@@ -111,6 +111,7 @@ int Mix_GroupAvailable(int tag);
 int Mix_GroupCount(int tag);
 int Mix_GroupOldest(int tag);
 int Mix_GroupNewer(int tag);
+int Mix_PlayChannel(int channel, Mix_Chunk *chunk, int loops);
 int Mix_PlayChannelTimed(int channel, Mix_Chunk *chunk, int loops, int ticks);
 int Mix_PlayMusic(Mix_Music *music, int loops);
 int Mix_FadeInMusic(Mix_Music *music, int loops, int ms);
@@ -177,12 +178,9 @@ function Mixer.allocateChannels(numchans)
     return sdlmixer.Mix_AllocateChannels(numchans)
 end
 
-function Mixer.loadWAV(file)
+function Mixer.LoadWAV(file)
     local file = file or ""
     local chunk = sdlmixer.Mix_LoadWAV(file)
-    if chunk == nil then
-        print("Mix_LoadWAV error: " .. sdlmixer.Mix_GetError())
-    end
     return chunk
 end
 
@@ -196,9 +194,7 @@ end
 function Mixer.LoadMUS(file)
     local file = file or ""
     local music = sdlmixer.Mix_LoadMUS(file)
-    if music == nil then
-        print("Failed to load music at " .. file .. ": ")
-    end
+    print(music)
     return music
 end
 
@@ -213,6 +209,7 @@ function Mixer.PlayChannel(channel, chunk, loops)
     local channel = channel or -1
     local chunk = chunk or nil
     local loops = loops or 0
+    print(channel, chunk, loops)
     return sdlmixer.Mix_PlayChannel(channel, chunk, loops)
 end
 

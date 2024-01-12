@@ -6,12 +6,12 @@ local path = (...) .. "."
 
 Game._sdl2 = require(path .. "Backend.SDL2")
 Game._sdl_mixer = require(path .. "Backend.SDLMixer")
+Game._mpg123 = require(path .. "Backend.mpg123")
+Game._portaudio = require(path .. "Backend.portaudio")
 require(path .. "Modules.Window")
 require(path .. "Modules.Graphics")
 require(path .. "Modules.Keyboard")
 
--- init mixer
-Game._sdl_mixer.Init(Game._sdl_mixer.MIX_INIT_MP3)
 function Game:run()
     if self.load then self:load() end
 
