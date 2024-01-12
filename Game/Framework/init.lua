@@ -28,7 +28,7 @@ function Game:run()
                 local keyname = self.Keyboard.GetKeyName(event.key.keysym.sym)
                 self.Keyboard._keys[keyname].pressed = true
                 self.Keyboard._keys[keyname].held = true
-                if self.keypressed then self:keypressed() end
+                if self.keypressed then self:keypressed(keyname) end
             elseif event.type == self._sdl2.EventType.KeyUp then
                 local keyname = self.Keyboard.GetKeyName(event.key.keysym.sym)
                 self.Keyboard._keys[keyname].pressed = false
