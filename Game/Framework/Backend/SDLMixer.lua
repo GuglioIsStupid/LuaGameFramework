@@ -146,7 +146,7 @@ int Mix_SetSynchroValue(int value);
 const char * Mix_GetError();
 ]]
 
-local sdlmixer = ffi.load("SDL2_mixer.dll")
+local sdlmixer = ffi.load("Lib/SDL2_mixer.dll")
 
 local Mixer = {}
 

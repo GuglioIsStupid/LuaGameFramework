@@ -261,7 +261,7 @@ SDL_AudioSpec* SDL_LoadWAV(const char* file, SDL_AudioSpec* spec, Uint8** audio_
 const char* SDL_GetBasePath(void);
 ]]
 
-local SDL = ffi.load("SDL2.dll")
+local SDL = ffi.load("Lib/SDL2.dll")
 
 local SDL2 = {}
 

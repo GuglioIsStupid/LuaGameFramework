@@ -55,6 +55,10 @@ function Game:run()
     end
 end
 
+function Game:errorhandler(msg)
+
+end
+
 function Game:quit()
     -- override this
 end

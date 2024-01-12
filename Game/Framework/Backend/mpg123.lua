@@ -16,7 +16,7 @@ ffi.cdef[[
     void mpg123_exit(void);
 ]]
 
-local mpg123 = ffi.load("libmpg123-0.dll")
+local mpg123 = ffi.load("Lib/libmpg123-0.dll")
 
 local function load_mp3(filename)
     -- Initialize libmpg123

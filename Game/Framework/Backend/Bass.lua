@@ -105,7 +105,7 @@ DWORD BASS_GetDevice();
 BOOL BASS_GetDeviceInfo(DWORD device, BASS_DEVICEINFO *info);
 ]]
 
-local bass = ffi.load("bass.dll")
+local bass = ffi.load("Lib/bass.dll")
 
 local Bass = {}
 
