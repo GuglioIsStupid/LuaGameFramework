@@ -4,7 +4,7 @@ local SDLTTF = require("Game.Framework.Backend.SDLTTF")
 Game.Graphics = {}
 
 Game.Graphics._bgColor = {0, 0, 0, 255}
-Game.Graphics._font = SDLTTF.OpenFont("Assets/Fonts/arial.ttf", 12)
+Game.Graphics._font = SDLTTF.OpenFont("Arial.ttf", 12)
 Game.Graphics._color = ffi.new("SDL_Color", {255, 255, 255, 255})
 
 -- draw rect
@@ -31,6 +31,14 @@ function Game.Graphics.SetBackgroundColor(r, g, b, a)
     local a = a or 255
     Game.Graphics._bgColor = {r, g, b, a}
     SDL2.SetRenderDrawColor(Game.Window._renderer, r, g, b, a)
+end
+
+function Game.Graphics.SetRenderColor(r, g, b, a)
+    local r = r or 0
+    local g = g or 0
+    local b = b or 0
+    local a = a or 255
+    Game._sdl2.SetRenderDrawColor(Game.Window._renderer, r, g, b, a)
 end
 
 -- Print

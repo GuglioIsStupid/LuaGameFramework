@@ -11,6 +11,11 @@ require(path .. "Modules.Window")
 require(path .. "Modules.Graphics")
 require(path .. "Modules.Keyboard")
 
+Game._updateFPS = 750
+Game._drawFPS = 1000
+
+local lastDT = 0
+
 function Game:run()
     if self.load then self:load() end
 
@@ -48,10 +53,14 @@ function Game:run()
         self.Window.RenderClear(self.Window._renderer)
         if self.draw then self:draw() end
         self._sdl2.RenderPresent(self.Window._renderer)
+        
         -- delay
-        self.Window.Delay(1)
+
+        self.Window.Delay((1/(self._updateFPS*2)) * 1000)
 
         self.Keyboard.Update()
+
+        lastDT = dt
     end
 end
 

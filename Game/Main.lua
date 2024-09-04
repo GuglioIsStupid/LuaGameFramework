@@ -28,6 +28,7 @@ end
 
 function Game:update(dt)    
     musicTime = musicTime + dt * 1000
+    print(1/dt)
     if Game.Keyboard.IsKeyDown("W") then
         player.y = player.y - 100 * dt
     elseif Game.Keyboard.IsKeyDown("S") then
@@ -48,6 +49,7 @@ function Game:update(dt)
         end
     end
 end
+
 local inputs = {
     ["D"] = 1,
     ["F"] = 2,
@@ -67,13 +69,15 @@ function Game:keyreleased(key)
 end
 
 function Game:draw()
-    Game._sdl2.SetRenderDrawColor(Game.Window._renderer, 255, 255, 255, 255)
+    Game.Graphics.SetRenderColor(255, 255, 255, 255)
     --Game.Graphics.DrawRect("fill", player.x, player.y, 100, 100)
 
     for i, note in ipairs(noteData) do -- 15x15
-        Game._sdl2.SetRenderDrawColor(Game.Window._renderer, 255, 0, 0, 255)
+        Game.Graphics.SetRenderColor(255, 0, 0, 255)
         Game.Graphics.DrawRect("fill", (note[2] - 1) * 30 + 265, note[3]*0.5, 15, 15)
     end
+
+    --[[ Game.Graphics.Print("Test", 0, 0) ]]
 end
 
 Game:run()
