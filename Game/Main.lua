@@ -20,7 +20,7 @@ local noteData = {
 }
 
 function Game:load()
-    Game.Window.CreateWindow("Game", nil, nil, 640, 480, 0)
+    Game.Window.CreateWindow("Game", nil, nil, 1280, 720, 0)
     json = require("Game.Libraries.json")
 
     musicTime = 0
@@ -28,7 +28,7 @@ end
 
 function Game:update(dt)    
     musicTime = musicTime + dt * 1000
-    print(1/dt)
+
     if Game.Keyboard.IsKeyDown("W") then
         player.y = player.y - 100 * dt
     elseif Game.Keyboard.IsKeyDown("S") then
@@ -78,6 +78,7 @@ function Game:draw()
     end
 
     --[[ Game.Graphics.Print("Test", 0, 0) ]]
+    Game.Graphics.Print("Test", 0, 0)
 end
 
 Game:run()

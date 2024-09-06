@@ -4,7 +4,7 @@ local SDLTTF = require("Game.Framework.Backend.SDLTTF")
 Game.Graphics = {}
 
 Game.Graphics._bgColor = {0, 0, 0, 255}
-Game.Graphics._font = SDLTTF.OpenFont("Arial.ttf", 12)
+Game.Graphics._font = SDLTTF.OpenFont("Assets/Fonts/arial.ttf", 12)
 Game.Graphics._color = ffi.new("SDL_Color", {255, 255, 255, 255})
 
 -- draw rect

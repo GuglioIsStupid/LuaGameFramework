@@ -37,6 +37,8 @@ void SDL_GetWindowSize(SDL_Window* window, int* w, int* h);
 // functions for getting renderer output size
 void SDL_GetRendererOutputSize(SDL_Renderer* renderer, int* w, int* h);
 
+SDL_Texture * SDL_CreateTextureFromSurface(SDL_Renderer * renderer, SDL_Surface * surface);
+
 // functions for getting renderer info
 typedef struct SDL_RendererInfo {
     const char* name;
@@ -259,6 +261,20 @@ SDL_AudioSpec* SDL_LoadWAV(const char* file, SDL_AudioSpec* spec, Uint8** audio_
 
 // base path
 const char* SDL_GetBasePath(void);
+
+int SDL_QueryTexture(SDL_Texture * texture,
+                     Uint32 * format, int *access,
+                     int *w, int *h);
+
+int SDL_RenderCopy(SDL_Renderer * renderer,
+                    SDL_Texture * texture,
+                    const SDL_Rect * srcrect,
+                    const SDL_Rect * dstrect);
+
+void SDL_FreeSurface(SDL_Surface * surface);
+
+const char* SDL_GetError(void);
+
 ]]
 
 local SDL = ffi.load("Lib/SDL2.dll")
@@ -420,6 +436,22 @@ function SDL2.RenderPresent(renderer)
     return SDL.SDL_RenderPresent(renderer)
 end
 
+function SDL2.CreateTextureFromSurface(...)
+    return SDL.SDL_CreateTextureFromSurface(...)
+end
+
+function SDL2.QueryTexture(...)
+    return SDL.SDL_QueryTexture
+end
+
+function SDL2.FreeSurface(...)
+    return SDL.SDL_FreeSurface(...)
+end
+
+function SDL2.RenderCopy(...)
+    return SDL.SDL_RenderCopy(...)
+end
+
 -- SDL_Color
 
 SDL2.Color = ffi.typeof("SDL_Color")
@@ -437,6 +469,10 @@ end
 -- base path
 function SDL2.GetBasePath()
     return SDL.SDL_GetBasePath()
+end
+
+function SDL2.GetError()
+    return SDL.SDL_GetError()
 end
 
 return SDL2
